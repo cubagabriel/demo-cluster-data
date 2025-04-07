@@ -1,0 +1,40 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: cluster-1
+  namespace: flux-system
+spec:
+  targetNamespace: fleet-default
+  interval: 5m
+  chart:
+    spec:
+      chart: ./charts # path inside the repo
+      sourceRef:
+        kind: GitRepository
+        name: cluster-templates
+        namespace: flux-system
+  values:
+    cluster:
+      config:
+        kubernetesVersion: v1.30.4+rke2r1
+      lbAddresses:
+        - 10.100.20.137/32
+      name: cluster-1
+    addons:
+      monitoring:
+        thanosIngress:
+          host: thanos1.whitestack.com
+    baremetalNodes:
+      - bmcAddress: 10.40.12.10
+        bmcCredentialsSecret: site-1-bmc-creds
+        bmcProvider: ilo
+        hostname: edge-1
+        primaryInterface:
+          address: 10.100.2.152/24
+          defaultRoute: 10.100.2.1
+          dhcpv4: false
+          name: eno1
+        roles:
+          - all-roles
+        swMgmtAddress: 10.100.20.16
+        swMgmtCredentialsSecret: site-1-swmgmt-creds

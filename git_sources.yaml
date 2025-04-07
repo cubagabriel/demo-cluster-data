@@ -1,0 +1,23 @@
+# git-source.yaml
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: cluster-templates
+  namespace: flux-system
+spec:
+  interval: 5m0s
+  url: https://github.com/Hector295/openstack-cluster-template.git
+  ref:
+    branch: demo/edge
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: cluster-data
+  namespace: flux-system
+spec:
+  interval: 5m0s
+  url: https://github.com/cubagabriel/demo-cluster-data.git
+  ref:
+    branch: main
+
